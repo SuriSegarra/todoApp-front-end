@@ -7,11 +7,11 @@ export default class TodoApp extends Component {
     state = {todos: [] }
     componentDidMount = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
-        const todos = await request.get(`https://localhost:${process.env.REACT_APP_BACK_END_PORT}/api/todos`)
+        const todosData = await request.get(`https://morning-cliffs-34029.herokuapp.com/api/todos`)
         .set('Authorization', user.token);
 
     
-        this.setState({ todos: todos.body })
+        this.setState({ todos: todosData.body })
     }
     handleClick = async () => {
         const newTodo = {
@@ -25,7 +25,7 @@ export default class TodoApp extends Component {
         const newTodos = [...this.state.todos, newTodo];
 
         this.setState({ todos: newTodos });
-        const data = await request.post(`https://localhost:${process.env.REACT_APP_BACK_END_PORT}/api/todos`, {
+        const data = await request.post(`https://morning-cliffs-34029.herokuapp.com/api/todos`, {
             task: this.state.todoInput
         })
 
@@ -38,8 +38,10 @@ export default class TodoApp extends Component {
         if(localStorage.getItem('user')) {
     
             return (
+
                 <div>
-                  <h3> Hello {JSON.parse(localStorage.getItem('user')).email}</h3>
+                    To Do List:
+        
                   <AddTodo 
                   todoInput={ this.state.todoInput }
                   handleClick={ this.handleClick }
@@ -50,9 +52,9 @@ export default class TodoApp extends Component {
                           textDecoration: todo.complete ? 'line-through' : 'none'
                       }}
                       onClick={async () => {
-                          //make a copy of the array in state
+                          
                           const newTodos = this.state.todos.slice();
-                          //go find whichever todo we're talking about here
+                         
                           const matchingTodo = newTodos.find((thisTodo) => todo.id === thisTodo.id);
 
                           matchingTodo.complete = !todo.complete
@@ -60,12 +62,15 @@ export default class TodoApp extends Component {
 
                           this.setState({ todos:newTodos});
 
-                          const data = await request.put(`https://localhost:${process.env.REACT_APP_BACK_END_PORT}/api/todos/${todo.id}`, matchingTodo)
+                          const data = await request.put(`https://morning-cliffs-34029.herokuapp.com/api/todos${todo.id}`, matchingTodo)
                           .set('Authorization', user.token);
 
-                      }} key={todo.id}>
+                      }}
+                      
+                      key={todo.id}>
                           {todo.task}
-                      </p>)
+                      </p>
+                      )
                       
                   }
                 </div>
