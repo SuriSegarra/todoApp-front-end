@@ -1,32 +1,37 @@
 import React, { Component } from 'react'
-// import TodoApp from './TodoApp.js';
-// import TodoAppLogin from './TodoAppLogin.js';
-// import './App.css';
-// import {
-//   BrowserRouter,
-//   Route,
-//   Redirect,
-//   Switch,
-// } from 'react-router-dom';
+import TodoApp from './components/TodoApp.js';
+import TodoAppLogin from './components/TodoAppLogin.js';
+import './App.css';
+import {
+  Redirect,
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Link
+  
+} from 'react-router-dom';
+// import Login from './Login.js';
 
 const isLoggedIn = () => JSON.parse(localStorage.getItem('user'));
 
 export default class App extends Component {
   render() {
     return (
+      <Router>
       <div className='App'>
-        <header>
-          My header
-        </header>
-      {/* <Router>
-        <Route path='/' render={() => 
-        isLoggedIn()
-          ? <TodoApp />
-          : <Redirect to='login' />
+        Hello
+        <Link to='/todos'>To Do List:</Link>
+
+        <Switch>
+          <Route path='/todos' render={() => 
+             isLoggedIn()
+              ? <TodoApp />
+              : <Redirect to='/login' />
         }/>
         <Route path='/login' component={TodoAppLogin} />
-      </Router> */}
+        </Switch>
       </div>
+      </Router>
     );
   }
 }
